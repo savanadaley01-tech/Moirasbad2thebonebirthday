@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pen</title>
+  </head>
+  <body>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bad Two The Bone Invitation</title>
+  <style>
+    /* Reset & Background Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      /* Tie-dye background simulation using layered radial gradients */
+      background: 
+        radial-gradient(circle at 20% 30%, #ff69b4 0%, transparent 50%),
+        radial-gradient(circle at 75% 20%, #ffb6c1 0%, transparent 40%),
+        radial-gradient(circle at 40% 70%, #ff1493 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, #ffccd5 0%, transparent 50%),
+        #ffb6c1;
+      background-blend-mode: multiply;
+      font-family: sans-serif;
+    }
+
+    /* Ambient Background Sparkles (Static/Floating) */
+    .bg-sparkle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      z-index: 1;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      opacity: 0.6;
+    }
+    .bg-sparkle.white { background-color: #ffffff; }
+    .bg-sparkle.black { background-color: #000000; }
+
+    /* Container holding the envelope and the revealed card */
+    .container {
+      position: relative;
+      width: 380px;
+      height: 540px;
+      perspective: 1000px;
+      z-index: 5;
+    }
+
+    /* Interactive Envelope Wrapper */
+    .envelope {
+      position: absolute;
+      width: 100%;
+      height: 300px;
+      background-color: #ffccd5; /* Light pink envelope base */
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      cursor: pointer;
+      z-index: 5;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Envelope Top Flap */
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 190px solid transparent;
+      border-right: 190px solid transparent;
+      border-top: 150px solid #ffb3c1; /* Slightly darker pink top flap */
+      transform-origin: top;
+      transition: transform 0.4s ease 0.2s;
+      z-index: 6;
+    }
+
+    /* Pure CSS Vector Black Heart Badge */
+    .heart-badge {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 90px;
+      background-color: #000000; /* Crisp solid black badge */
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      z-index: 7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+
+    /* Custom CSS Heart Shape Vector (Not an emoji) */
+    .css-heart {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      background-color: #ffffff; /* Sharp white clean silhouette cutout */
+      transform: rotate(-45deg) translateY(4px) translateX(-4px);
+    }
+
+    .css-heart::before,
+    .css-heart::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: #ffffff;
+      border-radius: 50%;
+    }
+
+    .css-heart::before {
+      top: -15px;
+      left: 0;
+    }
+
+    .css-heart::after {
+      left: 15px;
+      top: 0;
+    }
+
+    /* The Invitation Card (Hidden initially behind/inside) */
+    .card {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transform: translateY(150px) scale(0.8);
+      opacity: 0;
+      z-index: 2;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s, opacity 0.5s ease 0.5s;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Triggered Animation States */
+    .container.open .envelope::before {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .container.open .envelope {
+      transform: translateY(100px) rotateX(-20deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .container.open .card {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* Large 4-Point Diamond Sparkle Particle Styling */
+    .sparkle {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      z-index: 9999;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      animation: explode 0.8s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--mx), var(--my)) scale(0) rotate(180deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient background elements dynamically injected by script -->
+  <div id="bgSparklesContainer"></div>
+
+  <div class="container" id="invitationContainer">
+    <!-- Clickable Envelope Cover -->
+    <div class="envelope" id="envelopeCover">
+      <div class="heart-badge">
+        <div class="css-heart"></div>
+      </div>
+    </div>
+
+    <!-- Hidden Target Invitation Graphic -->
+    <div class="card">
+      <img src="https://i.postimg.cc/Vvjcy1WZ/BAD-1.png" alt="Bad Two The Bone Birthday Invitation">
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById('invitationContainer');
+    const envelope = document.getElementById('envelopeCover');
+    const bgContainer = document.getElementById('bgSparklesContainer');
+
+    // Generate static ambient black and white diamond sparkles in the tie-dye background
+    function createBackgroundSparkles() {
+      const sparkleCount = 30;
+      for (let i = 0; i < sparkleCount; i++) {
+        const bgSparkle = document.createElement('div');
+        bgSparkle.classList.add('bg-sparkle', Math.random() > 0.5 ? 'white' : 'black');
+        bgSparkle.style.left = `${Math.random() * 100}vw`;
+        bgSparkle.style.top = `${Math.random() * 100}vh`;
+        const scale = Math.random() * 0.6 + 0.6;
+        bgSparkle.style.transform = `scale(${scale}) rotate(${Math.random() * 360}deg)`;
+        bgContainer.appendChild(bgSparkle);
+      }
+    }
+    createBackgroundSparkles();
+
+    envelope.addEventListener('click', (e) => {
+      createSparkleExplosion(e.clientX, e.clientY);
+      container.classList.add('open');
+    });
+
+    function createSparkleExplosion(x, y) {
+      // Clean graphic palette containing whites, vivid pinks, light pinks, and blacks
+      const colors = ['#ffffff', '#ff4081', '#ff1493', '#ffccd5', '#000000'];
+      const particleCount = 75;
+
+      for (let i = 0; i < particleCount; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        
+        sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 180 + 40;
+        const mx = Math.cos(angle) * distance;
+        const my = Math.sin(angle) * distance;
+
+        sparkle.style.setProperty('--mx', `${mx}px`);
+        sparkle.style.setProperty('--my', `${my}px`);
+
+        document.body.appendChild(sparkle);
+
+        sparkle.addEventListener('animationend', () => {
+          sparkle.remove();
+        });
+      }
+    }
+  </script>
+</body>
+</html>
